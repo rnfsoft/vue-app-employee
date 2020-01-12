@@ -1,0 +1,123 @@
+<template>
+  <div id="app" class="small-container">
+    <h1>Employees</h1>
+    <employee-form @add:employee="addEmployee"/>
+    <employee-table 
+    :employees="employees" 
+    @delete:employee="deleteEmployee" 
+    @edit:employee="editEmployee"/>
+  </div>
+</template>
+
+<script>
+  import EmployeeTable from '@/components/EmployeeTable.vue'
+  import EmployeeForm from '@/components/EmployeeForm.vue'
+
+  export default {
+    name: 'app',
+    components: {
+      EmployeeTable,
+      EmployeeForm,
+    },
+    data(){
+      return{
+        employees:[
+          // {
+          //   id: 1,
+          //   name: 'Name 1',
+          //   email: 'name1@test.com',
+          // },
+          // {
+          //   id: 2,
+          //   name: 'Name 2',
+          //   email: 'name2@test.com'
+          // },
+          // {
+          //   id: 3,
+          //   name: 'Name 3',
+          //   email: 'name3@test.com'
+          // },
+        ],
+      }
+    },
+    methods:{
+      addEmployee(employee){
+        const lastId = this.employees.length > 0 ? this.employees[this.employees.length-1].id : 0;
+        const id = lastId + 1;
+        const newEmployee = {...employee, id};
+        // console.log(newEmployee); //Object { name: "adsfads", email: "adfsad", id: 4 }
+        
+        this.employees = [...this.employees, newEmployee]; //“spread operator” and expands an array into a list.
+      },
+      deleteEmployee(id){
+        this.employees = this.employees.filter(
+          employee => employee.id !== id
+        )
+      },
+      editEmployee(id, updatedEmployee) {
+        this.employees = this.employees.map(
+          employee => employee.id === id ? updatedEmployee : employee
+        )
+      }
+    },
+    mounted(){
+      this.getEmployees()
+    },
+    async getEmployees(){
+      try{
+        const response = await fetch('https://jsonplaceholder.typicode.com/users')
+        const data = await response.json()
+        this.employees = data
+      } catch(error){
+        console.error(error)
+      }
+    },
+    async addEmployee(employee){
+      try{
+        const response = await fetch('https://jsonplaceholder.typicode.com/users', {
+          method: 'POST',
+          body: JSON.stringify(employee),
+          headers: {'Content-type': 'application/json; charset=UTF-8'}
+        })
+        const data = await response.json()
+        this.employees = [...this.employees, data]
+      }catch(error){
+        console.error(error)
+      }
+    },
+    async editEmployee(id, updatedEmployee){
+      try{
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(updatedEmployee),
+          headers: {'Content-type': 'applicaiton/json; charset=UTF-8'},
+        })
+        const data = await response.json()
+        this.employees = this.employees.map(employee => (employee.id === id ? data : employee)) 
+      }catch(error){
+        console.error(error)
+      }
+    },
+    async deleteEmployee(id){
+      try{
+        await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+          method: 'DELETE'
+        })
+        this.employees = this.employees.filter(employee => employee.id !== id)
+      } catch(error) {
+        console.error(error)
+      }
+    }
+  }
+</script>
+
+<style>
+  button {
+    background: #009435;
+    border: 1px solid #009435;
+  }
+
+  .small-container {
+    max-width: 680px;
+  }
+</style>
