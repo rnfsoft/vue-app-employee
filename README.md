@@ -1,6 +1,6 @@
 # Vue-App-Employee
 
-[Demo](https://rnfsoft.github.io/vue-app-employee/)
+[View Demo](https://rnfsoft.github.io/vue-app-employee/)
 
 
 ### Reference
