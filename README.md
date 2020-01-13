@@ -1,29 +1,7 @@
-# vue-app
+# Vue-App-Employee
 
-## Project setup
-```
-npm install
-```
+[Demo](https://rnfsoft.github.io/vue-app-employee/)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Reference
+https://www.taniarascia.com/getting-started-with-vue/
